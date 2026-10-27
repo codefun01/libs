@@ -1,0 +1,61 @@
+<mxGraphModel dx="1200" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="#ffffff">
+  <root>
+    <mxCell id="0"/>
+    <mxCell id="1" parent="0"/>
+    
+    <!-- PARTICIPANTS / LIFELINES -->
+    <mxCell id="p1" value="Storefront Modal (SPA)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;size=40;" vertex="1" parent="1">
+      <mxGeometry x="100" y="80" width="160" height="420" as="geometry"/>
+    </mxCell>
+    
+    <mxCell id="p2" value="Custom OCC Endpoint&#xa;(/custom/auth/code)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;size=40;" vertex="1" parent="1">
+      <mxGeometry x="400" y="80" width="180" height="420" as="geometry"/>
+    </mxCell>
+    
+    <mxCell id="p3" value="OAuth Token Endpoint&#xa;(/oauth/token)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;size=40;" vertex="1" parent="1">
+      <mxGeometry x="720" y="80" width="180" height="420" as="geometry"/>
+    </mxCell>
+
+    <!-- STEP 1: Local PKCE generation -->
+    <mxCell id="n1" value="1. Generate PKCE&#xa;(verifier &amp; challenge)" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;size=14;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="115" y="150" width="130" height="40" as="geometry"/>
+    </mxCell>
+
+    <!-- STEP 2: POST /custom/auth/code -->
+    <mxCell id="m1" value="2. AJAX POST: Credentials + code_challenge" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="180" y="220" as="sourcePoint"/>
+        <mxPoint x="490" y="220" as="targetPoint"/>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- STEP 3: Return auth_code -->
+    <mxCell id="m2" value="3. 200 OK: { code: &quot;AUTH_CODE&quot; } (No 302, No Reload)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;strokeColor=#82b366;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="490" y="280" as="sourcePoint"/>
+        <mxPoint x="180" y="280" as="targetPoint"/>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- STEP 4: POST /oauth/token -->
+    <mxCell id="m3" value="4. AJAX POST: auth_code + code_verifier" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="180" y="340" as="sourcePoint"/>
+        <mxPoint x="810" y="340" as="targetPoint"/>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- STEP 5: Return Tokens -->
+    <mxCell id="m4" value="5. 200 OK: { access_token, refresh_token }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;strokeColor=#d79b00;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="810" y="400" as="sourcePoint"/>
+        <mxPoint x="180" y="400" as="targetPoint"/>
+      </mxGeometry>
+    </mxCell>
+
+    <!-- STEP 6: Modal Closes -->
+    <mxCell id="n2" value="6. Store Tokens &amp;&#xa;Close Modal silently" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#d5e8d4;strokeColor=#82b366;size=14;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="115" y="430" width="130" height="40" as="geometry"/>
+    </mxCell>
+  </root>
+</mxGraphModel>
