@@ -1,61 +1,83 @@
-<mxGraphModel dx="1200" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="#ffffff">
-  <root>
-    <mxCell id="0"/>
-    <mxCell id="1" parent="0"/>
-    
-    <!-- PARTICIPANTS / LIFELINES -->
-    <mxCell id="p1" value="Storefront Modal (SPA)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;size=40;" vertex="1" parent="1">
-      <mxGeometry x="100" y="80" width="160" height="420" as="geometry"/>
-    </mxCell>
-    
-    <mxCell id="p2" value="Custom OCC Endpoint&#xa;(/custom/auth/code)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;size=40;" vertex="1" parent="1">
-      <mxGeometry x="400" y="80" width="180" height="420" as="geometry"/>
-    </mxCell>
-    
-    <mxCell id="p3" value="OAuth Token Endpoint&#xa;(/oauth/token)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;size=40;" vertex="1" parent="1">
-      <mxGeometry x="720" y="80" width="180" height="420" as="geometry"/>
-    </mxCell>
+<mxfile host="app.diagrams.net">
+  <diagram name="Option2-Complete-PKCE-Flow">
+    <mxGraphModel dx="1400" dy="850" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" background="#ffffff">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
 
-    <!-- STEP 1: Local PKCE generation -->
-    <mxCell id="n1" value="1. Generate PKCE&#xa;(verifier &amp; challenge)" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;size=14;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="115" y="150" width="130" height="40" as="geometry"/>
-    </mxCell>
+        <!-- LIFELINES -->
+        <mxCell id="p1" value="Storefront Modal (SPA)&#xa;[UI &amp; AuthService]" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;size=40;" vertex="1" parent="1">
+          <mxGeometry x="100" y="60" width="200" height="740" as="geometry"/>
+        </mxCell>
 
-    <!-- STEP 2: POST /custom/auth/code -->
-    <mxCell id="m1" value="2. AJAX POST: Credentials + code_challenge" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;" edge="1" parent="1">
-      <mxGeometry relative="1" as="geometry">
-        <mxPoint x="180" y="220" as="sourcePoint"/>
-        <mxPoint x="490" y="220" as="targetPoint"/>
-      </mxGeometry>
-    </mxCell>
+        <mxCell id="p2" value="Custom Headless OCC&#xa;(/{baseSite}/custom/auth/code)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;size=40;" vertex="1" parent="1">
+          <mxGeometry x="470" y="60" width="220" height="740" as="geometry"/>
+        </mxCell>
 
-    <!-- STEP 3: Return auth_code -->
-    <mxCell id="m2" value="3. 200 OK: { code: &quot;AUTH_CODE&quot; } (No 302, No Reload)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;strokeColor=#82b366;" edge="1" parent="1">
-      <mxGeometry relative="1" as="geometry">
-        <mxPoint x="490" y="280" as="sourcePoint"/>
-        <mxPoint x="180" y="280" as="targetPoint"/>
-      </mxGeometry>
-    </mxCell>
+        <mxCell id="p3" value="OAuth Token Endpoint&#xa;(/authorizationserver/oauth/token)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;size=40;" vertex="1" parent="1">
+          <mxGeometry x="840" y="60" width="240" height="740" as="geometry"/>
+        </mxCell>
 
-    <!-- STEP 4: POST /oauth/token -->
-    <mxCell id="m3" value="4. AJAX POST: auth_code + code_verifier" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;" edge="1" parent="1">
-      <mxGeometry relative="1" as="geometry">
-        <mxPoint x="180" y="340" as="sourcePoint"/>
-        <mxPoint x="810" y="340" as="targetPoint"/>
-      </mxGeometry>
-    </mxCell>
+        <!-- STEP 1: PKCE GENERATION & STORAGE -->
+        <mxCell id="n1" value="1. Generate PKCE Pair:&#xa;• code_verifier (random crypto string)&#xa;• code_challenge (SHA-256 base64url)&#xa;• Store verifier in memory/sessionStorage" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;size=14;fontSize=11;align=left;" vertex="1" parent="1">
+          <mxGeometry x="80" y="125" width="240" height="65" as="geometry"/>
+        </mxCell>
 
-    <!-- STEP 5: Return Tokens -->
-    <mxCell id="m4" value="5. 200 OK: { access_token, refresh_token }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;strokeColor=#d79b00;" edge="1" parent="1">
-      <mxGeometry relative="1" as="geometry">
-        <mxPoint x="810" y="400" as="sourcePoint"/>
-        <mxPoint x="180" y="400" as="targetPoint"/>
-      </mxGeometry>
-    </mxCell>
+        <!-- STEP 2: POST /custom/auth/code -->
+        <mxCell id="m1" value="2. AJAX POST /occ/v2/{baseSite}/custom/auth/code&#xa;Payload: { username, password, code_challenge,&#xa;           code_challenge_method: 'S256',&#xa;           client_id: 'spartacus_public',&#xa;           redirect_uri: 'https://storefront/login' }" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="225" as="sourcePoint"/>
+            <mxPoint x="580" y="225" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
 
-    <!-- STEP 6: Modal Closes -->
-    <mxCell id="n2" value="6. Store Tokens &amp;&#xa;Close Modal silently" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#d5e8d4;strokeColor=#82b366;size=14;fontSize=11;" vertex="1" parent="1">
-      <mxGeometry x="115" y="430" width="130" height="40" as="geometry"/>
-    </mxCell>
-  </root>
-</mxGraphModel>
+        <!-- BACKEND INTERNAL PROCESSING -->
+        <mxCell id="n2" value="Internal Verification:&#xa;• Authenticate via AuthenticationManager&#xa;• Create OAuth2Authentication &amp; bind code_challenge&#xa;• Generate OAuth Authorization Code" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#f8cecc;strokeColor=#b85450;size=14;fontSize=11;align=left;" vertex="1" parent="1">
+          <mxGeometry x="460" y="250" width="240" height="65" as="geometry"/>
+        </mxCell>
+
+        <!-- STEP 3a: ERROR HANDLING (401) -->
+        <mxCell id="m2_err" value="[Invalid Credentials] 401 Unauthorized: { error: 'invalid_credentials' }&#xa;(Modal displays error inline, user retries)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=1.5;fontSize=10;strokeColor=#b85450;fontColor=#b85450;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="580" y="340" as="sourcePoint"/>
+            <mxPoint x="200" y="340" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- STEP 3b: SUCCESS 200 OK -->
+        <mxCell id="m2_ok" value="3. [Success] 200 OK: { code: 'AUTH_CODE' }&#xa;(Direct JSON response — zero 302 redirect, no page reload)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;strokeColor=#82b366;fontColor=#274e13;fontStyle=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="580" y="400" as="sourcePoint"/>
+            <mxPoint x="200" y="400" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- STEP 4: POST /oauth/token -->
+        <mxCell id="m3" value="4. AJAX POST /authorizationserver/oauth/token&#xa;Body (x-www-form-urlencoded):&#xa;grant_type=authorization_code &amp; client_id=spartacus_public &amp;&#xa;code=AUTH_CODE &amp; code_verifier=&lt;saved_verifier&gt; &amp;&#xa;redirect_uri=https://storefront/login" style="html=1;verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="480" as="sourcePoint"/>
+            <mxPoint x="960" y="480" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- TOKEN VALIDATION NOTE -->
+        <mxCell id="n3" value="PKCE Validation:&#xa;• Computes SHA-256(code_verifier)&#xa;• Matches against stored code_challenge&#xa;• Validates matching redirect_uri &amp; client_id&#xa;• Generates JWT access_token &amp; refresh_token" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;size=14;fontSize=11;align=left;" vertex="1" parent="1">
+          <mxGeometry x="840" y="520" width="240" height="75" as="geometry"/>
+        </mxCell>
+
+        <!-- STEP 5: TOKEN RESPONSE -->
+        <mxCell id="m4" value="5. 200 OK: { access_token, refresh_token, token_type: 'Bearer', expires_in: 43199 }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;strokeWidth=2;fontSize=11;strokeColor=#d79b00;fontColor=#7f6000;fontStyle=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="960" y="630" as="sourcePoint"/>
+            <mxPoint x="200" y="630" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- STEP 6: CLEANUP & STATE UPDATE -->
+        <mxCell id="n4" value="6. Finalize Authentication:&#xa;• Save tokens in AuthService memory / secure storage&#xa;• Delete code_verifier from memory/sessionStorage&#xa;• Emit UserLoginEvent &amp; Close Modal smoothly" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#d5e8d4;strokeColor=#82b366;size=14;fontSize=11;align=left;" vertex="1" parent="1">
+          <mxGeometry x="80" y="660" width="240" height="65" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
