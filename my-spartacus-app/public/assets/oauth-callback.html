@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <script>
+        if (window.opener) {
+            // Pass the URL parameters back to the parent window
+            window.opener.postMessage(window.location.search, window.location.origin);
+        }
+    </script>
+</body>
+</html>
