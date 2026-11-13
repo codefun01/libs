@@ -1,22 +1,20 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule, PLATFORM_ID, provideAppInitializer } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { AppRoutingModule } from '@spartacus/storefront';
 import { SpartacusModule } from './spartacus/spartacus.module';
-import { OAuthCallbackComponent } from './login-modal.component';
-import { RouterModule } from '@angular/router';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { OAuthPopupService } from './services/oauth.popup.service';
+
 
 @NgModule({
-  imports: [StoreModule.forRoot({}), EffectsModule.forRoot([]), AppRoutingModule, SpartacusModule, 
- RouterModule.forRoot([
-      { 
-        path: '¸¸', 
-        component: OAuthCallbackComponent,
-        data: { cxCmsRouteContext: { disableCms: true } } 
-      }
-    ]),
+  imports: [StoreModule.forRoot({}), EffectsModule.forRoot([]), AppRoutingModule, SpartacusModule,
+
     CommonModule
-],
+  ],
+  providers: [provideAppInitializer(() => {
+      const authPopupService = inject(OAuthPopupService);
+      return authPopupService.processPotentialPopupCallback();
+    }),]
 })
 export class AppModule { }
