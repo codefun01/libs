@@ -4,8 +4,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Store } from '@ngrx/store';
 import {
-  AuthActions, GlobalMessageService, GlobalMessageType,
-  LoggerService, OCC_USER_ID_CURRENT, UserIdService,
+  AuthActions, AuthService, GlobalMessageService, GlobalMessageType,
+  LoggerService, OCC_USER_ID_CURRENT, RoutingService, UserIdService,
 } from '@spartacus/core';
 import { filter, firstValueFrom, fromEvent, interval, map, merge } from 'rxjs';
 
@@ -28,6 +28,7 @@ export class OAuthPopupService {
   private readonly ngZone = inject(NgZone);
   private readonly destroyRef = inject(DestroyRef);
   private readonly logger = inject(LoggerService);
+  private readonly authService = inject(AuthService);
 
   private popup: Window | null = null;
 
@@ -39,10 +40,11 @@ export class OAuthPopupService {
 
     const popup = win.open('about:blank', 'sapLoginPopup', this.features(win));
     if (!popup) {
-      this.globalMessages.add(
-        { raw: 'Popup blocked. Please allow popups for this site.' },
-        GlobalMessageType.MSG_TYPE_ERROR
-      );
+      // this.globalMessages.add(
+      //   { raw: 'Popup blocked. Please allow popups for this site.' },
+      //   GlobalMessageType.MSG_TYPE_ERROR
+      // );
+     this.authService.loginWithRedirect();
       return false;
     }
     this.popup = popup;
